@@ -1,0 +1,6 @@
+{
+  "name": "ovio",
+  "avoid": ["Splitwise", "Split wise", "splitwise.com"],
+  "domains": ["splitwise.com"],
+  "colors": ["#1CC29F", "#5BC5A7", "#FF652F"]
+}

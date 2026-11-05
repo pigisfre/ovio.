@@ -1,0 +1,37 @@
+feature,area,priority,original,clone,notes
+Create local profile on first run,onboarding,must,yes,yes,local-first; S01 welcome
+Create group with name type and members,groups,must,yes,yes,
+Edit group and members,groups,must,yes,yes,
+Delete group,groups,should,yes,yes,
+List groups with your balance in each,groups,must,yes,yes,
+Add friend by name,friends,must,yes,yes,
+List friends with net balance across groups,friends,must,yes,yes,
+Friend detail with shared expenses,friends,must,yes,yes,
+Add expense in a group,expenses,must,yes,yes,
+Add expense with a friend outside groups,expenses,must,yes,yes,
+Choose who paid,expenses,must,yes,yes,
+Split equally among chosen people,expenses,must,yes,yes,cents remainder distributed deterministically
+Split by exact amounts,expenses,must,yes,yes,
+Split by percentages,expenses,must,yes,yes,
+Split by shares,expenses,must,yes,yes,
+Expense detail with breakdown,expenses,must,yes,yes,
+Edit and delete expense,expenses,must,yes,yes,
+Expense categories,expenses,should,yes,yes,
+Expense notes,expenses,should,yes,yes,
+Multiple payers on one expense,expenses,could,yes,no,
+Recurring expenses,expenses,could,yes,no,
+Group balances per member,balances,must,yes,yes,
+Simplify debts,balances,should,yes,yes,greedy min cash flow
+Settle up (record payment),settle,must,yes,yes,
+Activity feed,activity,should,yes,yes,
+Totals per group (spent you paid your share),balances,should,yes,yes,
+Default currency setting,account,should,yes,yes,
+Dark mode,account,could,yes,yes,follows the system
+Search expenses,expenses,could,yes,no,Pro on original
+Charts and spending by category,insights,could,yes,no,Pro on original
+Receipt photo attach,expenses,could,yes,no,
+Sync across devices and accounts,backend,skip,yes,skip,needs replica-backend; planned in architecture.md
+Invite friends by email,friends,skip,yes,skip,needs backend and email
+Receipt OCR itemisation,expenses,skip,yes,skip,licensed OCR backend
+Live currency conversion,expenses,skip,yes,skip,licensed FX data
+In-app payments (Pay / Venmo / PayPal),settle,skip,yes,skip,partner deals and regulated
