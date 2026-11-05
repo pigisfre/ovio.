@@ -1,7 +1,7 @@
 # ovio: a che punto siamo
 
 Ultimo aggiornamento: 2026-11-05. Branch di lavoro: `claude/fervent-einstein-fdsltp`.
-Sito web: https://pigisfre.github.io/ovio./ (si aggiorna a ogni push, dopo che i test passano).
+Sito web: https://pigisfre.github.io/ovio./ — **GitHub Pages disattivato dall’utente il 2026-11-05.** Il workflow continua a buildare, testare e aggiornare il branch `gh-pages`; per rimetterlo online: Settings → Pages → Branch `gh-pages` / root.
 
 ## Fatto
 
