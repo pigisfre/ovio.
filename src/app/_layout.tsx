@@ -1,5 +1,6 @@
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Platform, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useHydrated } from '../store/store.ts';
 import { useColors, useIsDark } from '../theme/index.ts';
@@ -15,9 +16,10 @@ export default function RootLayout() {
   };
   if (!hydrated) return null;
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: c.bg }}>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: Platform.OS === 'web' ? c['surface-raised'] : c.bg }}>
       <ThemeProvider value={theme}>
         <StatusBar style={dark ? 'light' : 'dark'} />
+        <View style={Platform.OS === 'web' ? { flex: 1, width: '100%', maxWidth: 560, alignSelf: 'center', backgroundColor: c.bg, boxShadow: '0 0 0 1px ' + c.separator } : { flex: 1 }}>
         <Stack screenOptions={{ headerShadowVisible: false, headerStyle: { backgroundColor: c.bg }, headerTintColor: c.tint, contentStyle: { backgroundColor: c.bg }, headerBackButtonDisplayMode: 'minimal' }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -29,6 +31,7 @@ export default function RootLayout() {
           <Stack.Screen name="friend/new" options={{ presentation: 'formSheet', title: 'Nuovo amico', sheetAllowedDetents: [0.5, 1], sheetGrabberVisible: true }} />
           <Stack.Screen name="settle" options={{ presentation: 'formSheet', title: 'Salda', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }} />
         </Stack>
+        </View>
       </ThemeProvider>
     </GestureHandlerRootView>
   );

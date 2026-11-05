@@ -21,7 +21,13 @@
       "package": "app.ovio"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "single",
+      "name": "ovio",
+      "shortName": "ovio",
+      "themeColor": "#111827",
+      "backgroundColor": "#F8F9F6",
+      "lang": "it"
     },
     "plugins": [
       "expo-router"
@@ -33,7 +39,8 @@
       "resizeMode": "contain"
     },
     "experiments": {
-      "typedRoutes": false
+      "typedRoutes": false,
+      "baseUrl": "/ovio."
     }
   }
 }
