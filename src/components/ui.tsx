@@ -5,7 +5,7 @@ import {
   type PressableProps, type StyleProp, type TextInputProps, type TextStyle, type ViewStyle,
 } from 'react-native';
 import { formatMoney, type Cents } from '../lib/money.ts';
-import { control, font, radius, tabular, useColors } from '../theme/index.ts';
+import { control, font, radius, tabular, useColors, useIsDark } from '../theme/index.ts';
 import { Icon } from './Icon.tsx';
 import type { SFSymbol } from 'sf-symbols-typescript';
 import type Ionicons from '@expo/vector-icons/Ionicons';
@@ -178,8 +178,9 @@ export function Segmented<V extends string>({ value, options, onChange, label }:
   value: V; options: { value: V; label: string; a11y?: string }[]; onChange: (v: V) => void; label: string;
 }) {
   const c = useColors();
+  const dark = useIsDark();
   return (
-    <View accessibilityRole="tablist" accessibilityLabel={label} style={[s.seg, { backgroundColor: c.surface }]}>
+    <View accessibilityRole="tablist" accessibilityLabel={label} style={[s.seg, { backgroundColor: dark ? c.surface : c.separator }]}>
       {options.map((o) => {
         const on = o.value === value;
         return (
@@ -189,7 +190,7 @@ export function Segmented<V extends string>({ value, options, onChange, label }:
             accessibilityLabel={o.a11y ?? o.label}
             accessibilityState={{ selected: on }}
             onPress={() => { tap(); onChange(o.value); }}
-            style={[s.segItem, on && { backgroundColor: c.separator }]}
+            style={[s.segItem, on && { backgroundColor: dark ? c.separator : c.bg }]}
           >
             <Text style={[font('subheadline'), { color: c.text, fontWeight: on ? '600' : '400' }]}>{o.label}</Text>
           </Pressable>

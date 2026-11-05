@@ -14,6 +14,7 @@ Sito web: https://pigisfre.github.io/ovio./ — **GitHub Pages disattivato dall�
     Salda (anche "Tutto" per un amico, un pagamento per ogni gruppo), attività, account,
     eliminazione con Annulla, avviso per le modifiche non salvate.
   - Palette (2026-11-06): due temi che seguono il sistema, solo i 5 colori (`replica/brand.md`).
+    Tema predefinito: scuro. Account → Aspetto: Scuro / Chiaro / Automatico (segue il sistema).
     Scuro: sfondi Midnight, testi Cloud. Chiaro: sfondi Cloud, testi Midnight, card del saldo Midnight.
     Lime = azioni e buone notizie, Periwinkle = attenzione ("devi", elimina). Nel tema chiaro sono
     solo riempimenti (etichette piene), mai testo. Slate solo per bordi.

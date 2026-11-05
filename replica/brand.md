@@ -16,7 +16,9 @@ Checks (screening only, not legal clearance; none were run in this session):
 | App Store and Google Play exact name | store search | to run |
 | handles | Instagram, TikTok, X | to run |
 
-## Palette (two appearances that follow the system, since 2026-11-06)
+## Palette (two appearances, dark by default, since 2026-11-06)
+The app opens dark. Account → Aspetto offers Scuro (default), Chiaro and Automatico (follows the system).
+
 Only these five colours. Surfaces, separators and secondary text are one brand colour laid over
 the other at low opacity (the hex values in `design/tokens.json` are those mixes).
 

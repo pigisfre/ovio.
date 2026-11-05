@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { glassHeader, sheetHeader } from '../components/headerOptions.tsx';
 import { UndoToast } from '../components/UndoToast.tsx';
 import { useHydrated } from '../store/store.ts';
-import { useColors, useIsDark } from '../theme/index.ts';
+import { useApplyAppearance, useColors, useIsDark } from '../theme/index.ts';
 
 /** Web only: a visible keyboard focus ring on every control (accessibility.md). */
 function useWebFocusRing(color: string) {
@@ -23,6 +23,7 @@ export default function RootLayout() {
   const c = useColors();
   const dark = useIsDark();
   const hydrated = useHydrated();
+  useApplyAppearance();
   useWebFocusRing(c.tint);
   const base = dark ? DarkTheme : DefaultTheme;
   const theme = {

@@ -40,6 +40,16 @@ export default function Account() {
         <View style={{ marginHorizontal: 16, marginTop: 24 }}>
           <Field label="Nome" value={name} onChangeText={setName} onEndEditing={() => name.trim() && updateMe({ name: name.trim() })} maxLength={40} returnKeyType="done" />
         </View>
+        <Section title="Aspetto" footer="Automatico segue l’impostazione chiaro/scuro del dispositivo.">
+          <View style={{ padding: 12 }}>
+            <Segmented
+              label="Aspetto"
+              value={settings.appearance ?? 'dark'}
+              options={[{ value: 'dark', label: 'Scuro' }, { value: 'light', label: 'Chiaro' }, { value: 'system', label: 'Automatico' }]}
+              onChange={(v) => setSettings({ appearance: v })}
+            />
+          </View>
+        </Section>
         <Section title="Valuta predefinita" footer="Vale per i nuovi gruppi e le spese fuori dai gruppi.">
           <View style={{ padding: 12 }}>
             <Segmented label="Valuta predefinita" value={settings.currency} options={currencies} onChange={(v) => setSettings({ currency: v })} />

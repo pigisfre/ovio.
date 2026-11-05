@@ -26,7 +26,8 @@ const server = createServer((req, res) => {
 const origin = `http://localhost:${server.address().port}${BASE}`;
 
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 390, height: 844 }, locale: 'it-IT' });
+// colorScheme 'light' on purpose: ovio must still open dark by default.
+const page = await browser.newPage({ viewport: { width: 390, height: 844 }, locale: 'it-IT', colorScheme: 'light' });
 const errors = [];
 page.on('pageerror', (e) => errors.push(String(e)));
 page.on('dialog', (d) => d.accept()); // window.confirm: always "yes"
@@ -38,12 +39,27 @@ const fill = async (placeholder, v) => vis(page.getByPlaceholder(placeholder, { 
 const byLabel = (l) => vis(page.getByLabel(l, { exact: true }));
 const see = async (t) => assert.ok(await text(t).isVisible(), `expected to see "${t}"`);
 const shot = async (n) => { if (SHOTS) { mkdirSync(SHOTS, { recursive: true }); await page.screenshot({ path: join(SHOTS, `${n}.png`) }); } };
+// Background of the largest painted element, e.g. 'rgb(17, 24, 39)' for Midnight.
+const appBackground = () => page.evaluate(() => {
+  let best = null, area = 0;
+  for (const el of document.querySelectorAll('div')) {
+    const bg = getComputedStyle(el).backgroundColor;
+    if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') continue;
+    const r = el.getBoundingClientRect();
+    if (r.width * r.height > area) { area = r.width * r.height; best = bg; }
+  }
+  return best;
+});
+const MIDNIGHT = 'rgb(17, 24, 39)';
+const CLOUD = 'rgb(248, 249, 246)';
 let step = '';
 const run = async (name, fn) => { step = name; await fn(); console.log(`ok - ${name}`); };
 
 try {
   await run('first run: create profile', async () => {
     await page.goto(origin);
+    await vis(page.getByPlaceholder('Il tuo nome', { exact: true })).waitFor();
+    assert.equal(await appBackground(), MIDNIGHT, 'dark by default even with a light system setting');
     await fill('Il tuo nome', 'Marco');
     await click('Inizia');
     await see('Nessun gruppo, per ora');
@@ -133,6 +149,21 @@ try {
     await click('Saldi e totali');
     await see('Luca deve a Giulia');
     assert.equal(await text('Luca deve a te').count(), 0, 'Luca should no longer owe me in the group');
+  });
+
+  await run('appearance: Chiaro switches to Cloud, Scuro back to Midnight, and it is remembered', async () => {
+    await page.goto(origin + 'account');
+    await byLabel('Chiaro').waitFor();
+    await byLabel('Chiaro').click();
+    await page.waitForTimeout(400);
+    assert.equal(await appBackground(), CLOUD);
+    await shot('light');
+    await page.reload();
+    await byLabel('Scuro').waitFor();
+    assert.equal(await appBackground(), CLOUD, 'light choice survives a reload');
+    await byLabel('Scuro').click();
+    await page.waitForTimeout(400);
+    assert.equal(await appBackground(), MIDNIGHT);
   });
 
   await run('deep link reload keeps the data', async () => {

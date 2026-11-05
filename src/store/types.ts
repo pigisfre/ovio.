@@ -55,7 +55,11 @@ export interface Activity {
   at: number;
 }
 
+export type Appearance = 'dark' | 'light' | 'system';
+
 export interface Settings {
   currency: string;
   simplifyByDefault: boolean;
+  /** default 'dark'; older saved data has no value and is treated as 'dark' */
+  appearance?: Appearance;
 }

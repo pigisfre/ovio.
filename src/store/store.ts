@@ -42,7 +42,7 @@ const initial = {
   groups: {},
   expenses: {},
   activity: [],
-  settings: { currency: 'EUR', simplifyByDefault: true },
+  settings: { currency: 'EUR', simplifyByDefault: true, appearance: 'dark' as const },
   undo: null as { label: string; expense: Expense } | null,
 };
 
