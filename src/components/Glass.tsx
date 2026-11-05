@@ -2,7 +2,7 @@ import { BlurView } from 'expo-blur';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import { useEffect, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Platform, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { glass } from '../theme/index.ts';
+import { useGlassTokens, useIsDark } from '../theme/index.ts';
 
 /** Reduce Transparency (iOS setting, or prefers-reduced-transparency on the web). */
 export function useReduceTransparency() {
@@ -30,18 +30,20 @@ export function useReduceTransparency() {
  */
 export function Glass({ style, children, interactive }: { style?: StyleProp<ViewStyle>; children?: ReactNode; interactive?: boolean }) {
   const reduce = useReduceTransparency();
+  const glass = useGlassTokens();
+  const dark = useIsDark();
   if (reduce || Platform.OS === 'android') {
     return <View style={[style, { backgroundColor: glass['fill-opaque'], borderColor: glass.border, borderWidth: StyleSheet.hairlineWidth }]}>{children}</View>;
   }
   if (Platform.OS === 'ios' && isLiquidGlassAvailable()) {
     return (
-      <GlassView glassEffectStyle="regular" colorScheme="dark" isInteractive={interactive} style={style}>
+      <GlassView glassEffectStyle="regular" colorScheme={dark ? 'dark' : 'light'} isInteractive={interactive} style={style}>
         {children}
       </GlassView>
     );
   }
   return (
-    <BlurView intensity={glass.blur * 2} tint="dark" style={[style, { overflow: 'hidden', borderColor: glass.border, borderWidth: StyleSheet.hairlineWidth }]}>
+    <BlurView intensity={glass.blur * 2} tint={dark ? 'dark' : 'light'} style={[style, { overflow: 'hidden', borderColor: glass.border, borderWidth: StyleSheet.hairlineWidth }]}>
       <View style={[StyleSheet.absoluteFill, { backgroundColor: glass.fill }]} pointerEvents="none" />
       {children}
     </BlurView>

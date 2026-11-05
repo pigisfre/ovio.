@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.ovio"
@@ -26,7 +26,7 @@
       "name": "ovio",
       "shortName": "ovio",
       "themeColor": "#111827",
-      "backgroundColor": "#111827",
+      "backgroundColor": "#F8F9F6",
       "lang": "it"
     },
     "plugins": [
@@ -41,7 +41,6 @@
     "experiments": {
       "typedRoutes": false,
       "baseUrl": "/ovio."
-    },
-    "backgroundColor": "#111827"
+    }
   }
 }

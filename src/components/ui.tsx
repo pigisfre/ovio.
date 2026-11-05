@@ -27,8 +27,8 @@ export function Button({ title, kind = 'primary', onPress, disabled, style, acce
   title: string; kind?: BtnKind; onPress: () => void; disabled?: boolean; style?: StyleProp<ViewStyle>; accessibilityHint?: string;
 }) {
   const c = useColors();
-  const bg = { primary: c.accent, secondary: c['surface-raised'], highlight: c.highlight, onCard: c['surface-raised'], plain: 'transparent', destructive: 'transparent' }[kind];
-  const fg = { primary: c['on-accent'], secondary: c.text, highlight: c['on-highlight'], onCard: c['on-card'], plain: c.tint, destructive: c.danger }[kind];
+  const bg = { primary: c.accent, secondary: c['surface-raised'], highlight: c.highlight, onCard: c['card-raised'], plain: 'transparent', destructive: c['negative-fill'] }[kind];
+  const fg = { primary: c['on-accent'], secondary: c.text, highlight: c['on-highlight'], onCard: c['on-card'], plain: c.tint, destructive: c['on-fill'] }[kind];
   return (
     <Pressable
       accessibilityRole="button"
@@ -122,16 +122,39 @@ export function GroupAvatar({ sf, ion, size = 40 }: { sf: SFSymbol; ion: Compone
   );
 }
 
-/** Amount with its words, so meaning never rides on colour alone. */
-export function Amount({ cents, currency, align = 'right', one }: { cents: Cents; currency: string; align?: 'left' | 'right'; one?: boolean }) {
+export type PillTone = 'positive' | 'negative' | 'neutral';
+
+/** A small filled label: Lime = good news, Periwinkle = attention, neutral = plain. Text is always Midnight on a fill. */
+export function Pill({ tone, children }: { tone: PillTone; children: string }) {
   const c = useColors();
-  if (cents === 0) return <T v="footnote" muted style={{ textAlign: align }}>pari</T>;
-  const color = cents > 0 ? c.positive : c.negative;
+  const bg = tone === 'positive' ? c['positive-fill'] : tone === 'negative' ? c['negative-fill'] : c['surface-raised'];
+  const fg = tone === 'neutral' ? c['text-muted'] : c['on-fill'];
   return (
-    <View style={{ alignItems: align === 'right' ? 'flex-end' : 'flex-start' }}>
-      <T v="caption" color={color}>{cents > 0 ? (one ? 'ti deve' : 'ti devono') : 'devi'}</T>
-      <T v="headline" color={color} style={tabular}>{formatMoney(Math.abs(cents), currency)}</T>
+    <View style={{ backgroundColor: bg, borderRadius: radius.pill, paddingHorizontal: 8, paddingVertical: 2, alignSelf: 'flex-end' }}>
+      <Text style={[font('caption'), { color: fg, fontWeight: '600' }]}>{children}</Text>
     </View>
+  );
+}
+
+/** A pill with its words above the figure, so meaning never rides on colour alone. */
+export function Figure({ tone, label, text, align = 'right' }: { tone: PillTone; label: string; text?: string; align?: 'left' | 'right' }) {
+  return (
+    <View style={{ alignItems: align === 'right' ? 'flex-end' : 'flex-start', gap: 3 }}>
+      <Pill tone={tone}>{label}</Pill>
+      {text ? <T v="headline" style={tabular}>{text}</T> : null}
+    </View>
+  );
+}
+
+export function Amount({ cents, currency, align = 'right', one }: { cents: Cents; currency: string; align?: 'left' | 'right'; one?: boolean }) {
+  if (cents === 0) return <Figure tone="neutral" label="pari" align={align} />;
+  return (
+    <Figure
+      tone={cents > 0 ? 'positive' : 'negative'}
+      label={cents > 0 ? (one ? 'ti deve' : 'ti devono') : 'devi'}
+      text={formatMoney(Math.abs(cents), currency)}
+      align={align}
+    />
   );
 }
 

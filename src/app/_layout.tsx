@@ -35,14 +35,14 @@ export default function RootLayout() {
       <ThemeProvider value={theme}>
         <StatusBar style={dark ? 'light' : 'dark'} />
         <View style={Platform.OS === 'web' ? { flex: 1, width: '100%', maxWidth: 560, alignSelf: 'center', backgroundColor: c.bg, boxShadow: '0 0 0 1px ' + c.separator, overflow: 'hidden' } : { flex: 1 }}>
-        <Stack screenOptions={{ ...sheetHeader, headerBackButtonDisplayMode: 'minimal' }}>
+        <Stack screenOptions={{ ...sheetHeader(c), headerBackButtonDisplayMode: 'minimal' }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="welcome" options={{ headerShown: false, gestureEnabled: false, animation: 'fade' }} />
           <Stack.Screen name="expense/new" options={{ presentation: 'modal', title: 'Nuova spesa' }} />
-          <Stack.Screen name="expense/[id]" options={{ ...glassHeader(), title: 'Spesa' }} />
+          <Stack.Screen name="expense/[id]" options={{ ...glassHeader(c, dark), title: 'Spesa' }} />
           <Stack.Screen name="group/new" options={{ presentation: 'modal', title: 'Nuovo gruppo' }} />
-          <Stack.Screen name="group/balances" options={{ ...glassHeader(), title: 'Saldi' }} />
+          <Stack.Screen name="group/balances" options={{ ...glassHeader(c, dark), title: 'Saldi' }} />
           <Stack.Screen name="friend/new" options={{ presentation: 'formSheet', title: 'Nuovo amico', sheetAllowedDetents: [0.5, 1], sheetGrabberVisible: true }} />
           <Stack.Screen name="settle" options={{ presentation: 'formSheet', title: 'Salda', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }} />
         </Stack>

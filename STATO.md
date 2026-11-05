@@ -13,9 +13,10 @@ Sito web: https://pigisfre.github.io/ovio./ — **GitHub Pages disattivato dall�
   - Gruppi, amici, spese divise in 4 modi (uguale, esatta, %, quote), saldi, semplificazione debiti,
     Salda (anche "Tutto" per un amico, un pagamento per ogni gruppo), attività, account,
     eliminazione con Annulla, avviso per le modifiche non salvate.
-  - Palette (2026-11-06): un solo tema scuro. Sfondi Midnight #111827; testi Cloud #F8F9F6 (sfumature
-    di Cloud per card e separatori); Lime #D9F99D per azioni e buone notizie; Periwinkle #A5B4FC per
-    "devi", errori ed elimina; Slate #64748B solo per bordi. Nessun altro colore (`replica/brand.md`).
+  - Palette (2026-11-06): due temi che seguono il sistema, solo i 5 colori (`replica/brand.md`).
+    Scuro: sfondi Midnight, testi Cloud. Chiaro: sfondi Cloud, testi Midnight, card del saldo Midnight.
+    Lime = azioni e buone notizie, Periwinkle = attenzione ("devi", elimina). Nel tema chiaro sono
+    solo riempimenti (etichette piene), mai testo. Slate solo per bordi.
   - Liquid Glass solo sulle barre e sul banner Annulla (`src/components/Glass.tsx`,
     `src/components/headerOptions.tsx`). iOS 26 usa quello di sistema.
 - **Test**: `npm test` (9 unit test) e `npm run e2e` (11 controlli Playwright sul sito buildato).

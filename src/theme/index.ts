@@ -1,24 +1,28 @@
+import { useColorScheme } from 'react-native';
 import tokens from '../../replica/design/tokens.json';
 
-// ovio has one appearance: Midnight backgrounds, Cloud text (see replica/design/tokens.json → roles).
-type ColorKey = keyof typeof tokens.color;
+// Two appearances that follow the system: dark = Midnight backgrounds + Cloud text,
+// light = Cloud backgrounds + Midnight text (see replica/design/tokens.json → roles).
+type ColorKey = keyof typeof tokens.color.light;
 export type Colors = Record<ColorKey, string>;
+export type GlassTokens = typeof tokens.glass.dark;
 
 export const palette = tokens.palette;
 export const type = tokens.type;
 export const radius = tokens.radius;
 export const space = tokens.space;
 export const control = tokens.control;
-export const glass = tokens.glass;
-
-const colors: Colors = tokens.color;
-
-export function useColors(): Colors {
-  return colors;
-}
 
 export function useIsDark() {
-  return true;
+  return useColorScheme() === 'dark';
+}
+
+export function useColors(): Colors {
+  return useIsDark() ? tokens.color.dark : tokens.color.light;
+}
+
+export function useGlassTokens(): GlassTokens {
+  return useIsDark() ? tokens.glass.dark : tokens.glass.light;
 }
 
 type TypeKey = keyof typeof tokens.type;

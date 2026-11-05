@@ -2,7 +2,7 @@ import { Screen } from '../../components/Screen.tsx';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
 import { View } from 'react-native';
-import { Toggle, Avatar, Button, Row, Section, Separator, T } from '../../components/ui.tsx';
+import { Figure, Toggle, Avatar, Button, Row, Section, Separator, T } from '../../components/ui.tsx';
 import { netBalances } from '../../lib/balances.ts';
 import { formatMoney } from '../../lib/money.ts';
 import { displayName, groupDebts, groupExpenses } from '../../store/selectors.ts';
@@ -62,13 +62,8 @@ export default function Balances() {
                 title={pid === meId ? `${people[pid]?.name} (tu)` : people[pid]?.name ?? '?'}
                 trailing={(() => {
                   const v = net.get(pid) ?? 0;
-                  if (v === 0) return <T v="footnote" muted>pari</T>;
-                  return (
-                    <View style={{ alignItems: 'flex-end' }}>
-                      <T v="caption" color={v > 0 ? c.positive : c.negative}>{v > 0 ? 'deve ricevere' : 'deve dare'}</T>
-                      <T v="headline" color={v > 0 ? c.positive : c.negative} style={tabular}>{formatMoney(Math.abs(v), group.currency)}</T>
-                    </View>
-                  );
+                  if (v === 0) return <Figure tone="neutral" label="pari" />;
+                  return <Figure tone={v > 0 ? 'positive' : 'negative'} label={v > 0 ? 'deve ricevere' : 'deve dare'} text={formatMoney(Math.abs(v), group.currency)} />;
                 })()}
               />
             </View>

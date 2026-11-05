@@ -4,9 +4,9 @@ import { formatMoney } from '../lib/money.ts';
 import { displayName, myImpact } from '../store/selectors.ts';
 import { useStore } from '../store/store.ts';
 import type { Expense } from '../store/types.ts';
-import { tabular, useColors } from '../theme/index.ts';
+import { useColors } from '../theme/index.ts';
 import { categoryIcon, Icon } from './Icon.tsx';
-import { Row, Section, Separator, T } from './ui.tsx';
+import { Figure, Row, Section, Separator } from './ui.tsx';
 
 const monthFmt = new Intl.DateTimeFormat('it-IT', { month: 'long', year: 'numeric' });
 const dayFmt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short' });
@@ -33,7 +33,7 @@ export function ExpenseList({ expenses, meId }: { expenses: Expense[]; meId: str
             const subtitle = e.isPayment
               ? `${displayName(payer, { subject: true })} → ${displayName(payee, { subject: true })} · ${dayFmt.format(e.date)}`
               : `${displayName(payer, { subject: true })} ${payer?.isMe ? 'hai' : 'ha'} pagato ${formatMoney(e.total, e.currency)} · ${dayFmt.format(e.date)}`;
-            const color = impact > 0 ? c.positive : impact < 0 ? c.negative : c['text-muted'];
+            const tone = e.isPayment ? 'neutral' : impact > 0 ? 'positive' : impact < 0 ? 'negative' : 'neutral';
             const word = e.isPayment ? 'pagamento' : impact > 0 ? 'hai prestato' : impact < 0 ? 'devi' : 'non coinvolto';
             return (
               <View key={e.id}>
@@ -47,14 +47,7 @@ export function ExpenseList({ expenses, meId }: { expenses: Expense[]; meId: str
                   title={e.isPayment ? 'Pagamento' : e.description}
                   subtitle={subtitle}
                   accessibilityLabel={`${e.isPayment ? 'Pagamento' : e.description}, ${subtitle}, ${word} ${formatMoney(Math.abs(impact || e.total), e.currency)}`}
-                  trailing={
-                    <View style={{ alignItems: 'flex-end' }}>
-                      <T v="caption" color={color}>{word}</T>
-                      {impact !== 0 || e.isPayment ? (
-                        <T v="headline" color={color} style={tabular}>{formatMoney(Math.abs(e.isPayment ? e.total : impact), e.currency)}</T>
-                      ) : null}
-                    </View>
-                  }
+                  trailing={<Figure tone={tone} label={word} text={impact !== 0 || e.isPayment ? formatMoney(Math.abs(e.isPayment ? e.total : impact), e.currency) : undefined} />}
                   onPress={() => router.push(`/expense/${e.id}`)}
                 />
               </View>

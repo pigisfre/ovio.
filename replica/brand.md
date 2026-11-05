@@ -16,22 +16,26 @@ Checks (screening only, not legal clearance; none were run in this session):
 | App Store and Google Play exact name | store search | to run |
 | handles | Instagram, TikTok, X | to run |
 
-## Palette (one dark theme, since 2026-11-06)
-Only these five colours. Surfaces and secondary text are Cloud laid over Midnight at low opacity
-(the hex values in `design/tokens.json` are those mixes), so nothing outside the palette appears.
+## Palette (two appearances that follow the system, since 2026-11-06)
+Only these five colours. Surfaces, separators and secondary text are one brand colour laid over
+the other at low opacity (the hex values in `design/tokens.json` are those mixes).
 
-| name | hex | role |
-| --- | --- | --- |
-| Midnight | #111827 | every background |
-| Cloud | #F8F9F6 | all text; at 6 / 10 / 14 % for cards, raised controls and separators; at 66 % for secondary text (7.78:1) |
-| Lime | #D9F99D | action and good news: primary buttons, selected tab, header buttons, "ti devono", "Tutto pari", the figure on the balance card, my avatar |
-| Periwinkle | #A5B4FC | attention: "devi", errors, delete; other people's avatars |
-| Slate | #64748B | input borders and non-text lines only (3.7:1 on Midnight: too low for text) |
+| name | hex | light appearance | dark appearance |
+| --- | --- | --- | --- |
+| Cloud | #F8F9F6 | every background; tints of Midnight over it for cards (4 / 7 / 10 %) | all text; tints over Midnight for cards (6 / 10 / 14 %) |
+| Midnight | #111827 | all text (70 % for secondary text, 5.5:1 or better), primary buttons, the balance card | every background |
+| Lime | #D9F99D | fills only: "ti devono" / "pari" labels, the figure on the card, Lime text on Midnight buttons, my avatar | the same, plus primary buttons, tint and the selected tab |
+| Periwinkle | #A5B4FC | fills only: "devi" labels, the delete button, other people's avatars | the same, plus error text |
+| Slate | #64748B | input borders and non-text lines | the same |
 
-Material: Liquid Glass on the floating layer only (tab bar, navigation bars, the undo banner).
-Content (cards, rows) stays on solid Cloud tints, as Apple requires.
+Rule: in light mode Lime and Periwinkle are never text on Cloud (1.1:1 and 1.9:1). They are fills
+with Midnight text on top. The labels use the same filled pills in both appearances, so the two
+themes match.
 
-Contrast: `python3 .claude/skills/replica-design/contrast.py replica/design/tokens.json` → 19 pairs, 0 failing.
+Material: Liquid Glass on the floating layer only (tab bar, navigation bars, the undo banner),
+light or dark to match. Content (cards, rows) stays on solid tints, as Apple requires.
+
+Contrast: `python3 .claude/skills/replica-design/contrast.py replica/design/tokens.json` → 44 pairs, 0 failing.
 
 ## Voice
 Italian, second person, short, warm, never guilt-tripping about money.
