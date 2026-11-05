@@ -1,14 +1,28 @@
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 import { Platform, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { UndoToast } from '../components/UndoToast.tsx';
 import { useHydrated } from '../store/store.ts';
 import { useColors, useIsDark } from '../theme/index.ts';
+
+/** Web only: a visible keyboard focus ring on every control (accessibility.md). */
+function useWebFocusRing(color: string) {
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof document === 'undefined') return;
+    const el = document.createElement('style');
+    el.textContent = `[role="button"]:focus-visible,[role="tab"]:focus-visible,[role="radio"]:focus-visible,[role="switch"]:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid ${color};outline-offset:2px}`;
+    document.head.appendChild(el);
+    return () => el.remove();
+  }, [color]);
+}
 
 export default function RootLayout() {
   const c = useColors();
   const dark = useIsDark();
   const hydrated = useHydrated();
+  useWebFocusRing(dark ? c.periwinkle : '#4F46E5');
   const base = dark ? DarkTheme : DefaultTheme;
   const theme = {
     ...base,
@@ -31,6 +45,7 @@ export default function RootLayout() {
           <Stack.Screen name="friend/new" options={{ presentation: 'formSheet', title: 'Nuovo amico', sheetAllowedDetents: [0.5, 1], sheetGrabberVisible: true }} />
           <Stack.Screen name="settle" options={{ presentation: 'formSheet', title: 'Salda', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }} />
         </Stack>
+        <UndoToast />
         </View>
       </ThemeProvider>
     </GestureHandlerRootView>

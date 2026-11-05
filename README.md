@@ -19,13 +19,15 @@ I dati restano nel browser (localStorage), non su un server.
 - `src/store` stato locale (Zustand + AsyncStorage)
 - `src/theme` legge i token da `replica/design/tokens.json`
 - `replica/` documenti di progetto: recon, feature matrix, architettura, schema SQL, design, brand
-- `tests/` test della logica (`npm test`)
+- `tests/` test della logica (`npm test`) e `tests/e2e/flow.mjs` test end-to-end sul web (`npm run e2e`, girano anche in CI prima di pubblicare)
 
 ## Comandi
 
 ```bash
 npm ci
-npm test
+npm test              # test della logica
+npm run build:web     # build web in dist/
+npm run e2e           # test end-to-end sul sito buildato
 npx tsc --noEmit
 npx expo start        # sviluppo, con Expo Go
 ```

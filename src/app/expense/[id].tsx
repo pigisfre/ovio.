@@ -1,5 +1,5 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { Alert, Platform, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { categoryIcon, Icon } from '../../components/Icon.tsx';
 import { Avatar, Button, Empty, HeaderText, Row, Section, Separator, T } from '../../components/ui.tsx';
 import { formatMoney } from '../../lib/money.ts';
@@ -17,13 +17,8 @@ export default function ExpenseDetail() {
   if (!e) return <Empty sf="trash" ion="trash-outline" title="Spesa eliminata" body="Questa spesa non c’è più." />;
 
   const ic = e.isPayment ? { sf: 'arrow.left.arrow.right' as const, ion: 'swap-horizontal' as const } : categoryIcon[e.category] ?? categoryIcon.general;
-  const remove = () => {
-    const go = () => { deleteExpense(e.id); router.back(); };
-    const title = e.isPayment ? 'Eliminare il pagamento?' : `Eliminare “${e.description}”?`;
-    const msg = 'I saldi verranno ricalcolati.';
-    if (Platform.OS === 'web') { if (globalThis.confirm?.(`${title}\n${msg}`)) go(); return; }
-    Alert.alert(title, msg, [{ text: 'Annulla', style: 'cancel' }, { text: 'Elimina', style: 'destructive', onPress: go }]);
-  };
+  // Deleting is undoable (UndoToast), so no alert first: alerts.md › Best practices.
+  const remove = () => { deleteExpense(e.id); router.back(); };
 
   return (
     <>

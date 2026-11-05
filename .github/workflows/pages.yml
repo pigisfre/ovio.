@@ -25,20 +25,28 @@ jobs:
 
       - run: npm ci
 
-      - name: Typecheck and tests
+      - name: Typecheck and unit tests
         run: |
           npx tsc --noEmit
           npm test
 
       - name: Export web build
-        run: npx expo export --platform web --output-dir dist
+        run: npm run build:web
         env:
           CI: 1
 
-      - name: Prepare for GitHub Pages
+      - name: End-to-end test (Playwright on the built site)
         run: |
-          cp dist/index.html dist/404.html   # SPA fallback for deep links
-          touch dist/.nojekyll               # keep the _expo folder
+          npx playwright install --with-deps chromium
+          E2E_SHOTS=e2e-shots npm run e2e
+
+      - name: Keep e2e screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots
+          path: e2e-shots
+          if-no-files-found: ignore
 
       - name: Publish to gh-pages branch
         run: |

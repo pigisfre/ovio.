@@ -95,3 +95,31 @@ test('settle up brings a balance back to zero', () => {
   assert.equal(balanceBetween(entries, 'me', 'f'), 0);
   assert.equal(netBalances(entries).get('me'), 0);
 });
+
+import { friendBalance, friendContexts, myGroupBalance, pairBalanceInGroup } from '../src/store/ledger.ts';
+import type { Expense, Group } from '../src/store/types.ts';
+
+const exp = (id: string, groupId: string | null, shares: { personId: string; paid: number; owed: number }[], isPayment = false): Expense => ({
+  id, groupId, description: id, total: shares.reduce((a, s) => a + s.paid, 0), currency: 'EUR', method: 'exact', shares,
+  category: 'general', isPayment, date: 1, createdAt: 1, updatedAt: 1,
+});
+
+test('settling with a friend per context clears group and loose balances', () => {
+  const groups: Record<string, Group> = {
+    g1: { id: 'g1', name: 'Casa', kind: 'home', memberIds: ['me', 'f', 'x'], currency: 'EUR', simplifyDebts: true, createdAt: 1 },
+  };
+  const expenses: Record<string, Expense> = {
+    e1: exp('e1', 'g1', [{ personId: 'me', paid: 3000, owed: 1000 }, { personId: 'f', paid: 0, owed: 1000 }, { personId: 'x', paid: 0, owed: 1000 }]),
+    e2: exp('e2', null, [{ personId: 'f', paid: 800, owed: 400 }, { personId: 'me', paid: 0, owed: 400 }]),
+  };
+  const ctx = friendContexts(expenses, groups, 'me', 'f');
+  assert.deepEqual(ctx, [{ groupId: 'g1', balance: 1000 }, { groupId: null, balance: -400 }]);
+  assert.equal(friendBalance(expenses, groups, 'me', 'f'), 600);
+
+  // "Tutto": one payment per context, as the settle screen records them
+  expenses.p1 = exp('p1', 'g1', [{ personId: 'f', paid: 1000, owed: 0 }, { personId: 'me', paid: 0, owed: 1000 }], true);
+  expenses.p2 = exp('p2', null, [{ personId: 'me', paid: 400, owed: 0 }, { personId: 'f', paid: 0, owed: 400 }], true);
+  assert.deepEqual(friendContexts(expenses, groups, 'me', 'f'), []);
+  assert.equal(pairBalanceInGroup(expenses, groups.g1, 'me', 'f'), 0);
+  assert.equal(myGroupBalance(expenses, groups.g1, 'me'), 1000); // x still owes me in the group
+});

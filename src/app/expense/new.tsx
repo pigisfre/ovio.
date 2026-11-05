@@ -1,6 +1,6 @@
-import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams, usePreventRemove } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { categoryIcon, groupIcon, Icon } from '../../components/Icon.tsx';
 import { PersonPicker } from '../../components/PersonPicker.tsx';
 import { Avatar, Check, Field, HeaderText, Row, Section, Segmented, Separator, T, tap } from '../../components/ui.tsx';
@@ -57,6 +57,19 @@ export default function ExpenseEditor() {
   const [notes, setNotes] = useState(existing?.notes ?? '');
   const [day, setDay] = useState<'today' | 'yesterday' | 'kept'>(existing ? 'kept' : 'today');
 
+  // Unsaved changes are confirmed before a swipe or Annulla throws them away: sheets.md › Best practices.
+  const snapshot = JSON.stringify({ description, amount, payerId, method, participants, values, category, notes, groupId });
+  const [initialSnapshot] = useState(snapshot);
+  const dirty = snapshot !== initialSnapshot;
+  const allowLeave = usePreventRemove(dirty, ({ repeat }) => {
+    const title = existing ? 'Scartare le modifiche?' : 'Scartare questa spesa?';
+    if (Platform.OS === 'web') { if (globalThis.confirm?.(title)) repeat(); return; }
+    Alert.alert(title, undefined, [
+      { text: 'Continua a modificare', style: 'cancel' },
+      { text: 'Scarta', style: 'destructive', onPress: repeat },
+    ]);
+  });
+
   const total = parseAmount(amount);
   const cur = group?.currency ?? existing?.currency ?? currency;
 
@@ -104,6 +117,7 @@ export default function ExpenseEditor() {
       values: method === 'equal' ? undefined : numericValues, shares: result.shares,
       category, notes: notes.trim() || undefined, isPayment: false, date,
     });
+    allowLeave();
     router.back();
   };
 

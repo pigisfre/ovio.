@@ -4,7 +4,7 @@ import { Alert, Platform, ScrollView, View } from 'react-native';
 import { BalanceCard } from '../../../components/BalanceCard.tsx';
 import { ExpenseList } from '../../../components/ExpenseList.tsx';
 import { Button, Empty } from '../../../components/ui.tsx';
-import { expensesWith, friendBalance } from '../../../store/selectors.ts';
+import { expensesWith, friendBalance, friendContexts } from '../../../store/selectors.ts';
 import { useS } from '../../../store/store.ts';
 
 export default function FriendDetail() {
@@ -15,6 +15,7 @@ export default function FriendDetail() {
   const list = useMemo(() => expensesWith(expenses, meId, id), [expenses, meId, id]);
   if (!friend) return <Empty sf="person.slash" ion="person-remove-outline" title="Amico non trovato" body="Forse è stato rimosso." />;
   const bal = friendBalance(expenses, groups, meId, id);
+  const openCount = friendContexts(expenses, groups, meId, id).length;
   const shared = Object.values(groups).filter((g) => g.memberIds.includes(id)).length;
 
   const remove = () => {
@@ -32,7 +33,7 @@ export default function FriendDetail() {
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ paddingBottom: 120 }}>
         <BalanceCard cents={bal} currency={currency} context={bal === 0 ? (shared ? `${shared} gruppi in comune` : undefined) : bal > 0 ? `${friend.name} ti deve` : `devi a ${friend.name}`}>
           <Button kind="highlight" title="Nuova spesa" style={{ flex: 1 }} onPress={() => router.push({ pathname: '/expense/new', params: { friendId: id } })} />
-          <Button kind="onCard" title="Salda" style={{ flex: 1 }} disabled={bal === 0} onPress={() => router.push({ pathname: '/settle', params: { friendId: id } })} />
+          <Button kind="onCard" title="Salda" style={{ flex: 1 }} disabled={openCount === 0} onPress={() => router.push({ pathname: '/settle', params: { friendId: id } })} />
         </BalanceCard>
         {list.length === 0 ? (
           <Empty sf="receipt" ion="receipt-outline" title={`Niente in comune con ${friend.name}`} body="Aggiungi una spesa per iniziare a dividerla." />

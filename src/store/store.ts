@@ -15,6 +15,8 @@ interface State {
   expenses: Record<string, Expense>;
   activity: Activity[];
   settings: Settings;
+  /** last deleted expense, offered back for a few seconds */
+  undo: { label: string; expense: Expense } | null;
 
   createMe: (name: string, email?: string) => void;
   updateMe: (patch: Partial<Pick<Person, 'name' | 'email'>>) => void;
@@ -28,6 +30,8 @@ interface State {
   deleteExpense: (id: string) => Expense | undefined;
   restoreExpense: (e: Expense) => void;
 
+  undoLast: () => void;
+  clearUndo: () => void;
   setSettings: (patch: Partial<Settings>) => void;
   reset: () => void;
 }
@@ -39,6 +43,7 @@ const initial = {
   expenses: {},
   activity: [],
   settings: { currency: 'EUR', simplifyByDefault: true },
+  undo: null as { label: string; expense: Expense } | null,
 };
 
 export const useStore = create<State>()(
@@ -126,12 +131,27 @@ export const useStore = create<State>()(
             return { expenses };
           });
           log('expense_deleted', `Eliminata “${e.description}”`, { subjectId: id, groupId: e.groupId, amount: e.total, currency: e.currency });
+          set({ undo: { label: e.isPayment ? 'Pagamento eliminato' : `“${e.description}” eliminata`, expense: e } });
           return e;
         },
         restoreExpense: (e) => set((s) => ({ expenses: { ...s.expenses, [e.id]: e } })),
+        undoLast: () => {
+          const u = get().undo;
+          if (!u) return;
+          // Drop the "deleted" entry from the feed too, so the undo leaves no trace.
+          set((s) => ({
+            expenses: { ...s.expenses, [u.expense.id]: u.expense },
+            activity: (() => {
+              const i = s.activity.findIndex((x) => x.kind === 'expense_deleted' && x.subjectId === u.expense.id);
+              return i < 0 ? s.activity : [...s.activity.slice(0, i), ...s.activity.slice(i + 1)];
+            })(),
+            undo: null,
+          }));
+        },
+        clearUndo: () => set({ undo: null }),
 
         setSettings: (patch) => set((s) => ({ settings: { ...s.settings, ...patch } })),
-        reset: () => set({ ...initial }),
+        reset: () => set({ ...initial, undo: null }),
       };
     },
     {
