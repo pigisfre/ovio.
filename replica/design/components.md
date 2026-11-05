@@ -4,6 +4,9 @@ Apple HIG first (`.claude/skills/apple-design`): system components carry navigat
 identity lives in colour, the balance card and the voice. Every amount uses tabular numerals.
 Text scales with Dynamic Type (RN `allowFontScaling`, default on).
 
+> 2026-11-06: one dark theme. Card = Cloud 6% on Midnight, figure in Lime, context in Periwinkle;
+> positive amounts Lime, "devi" and destructive actions Periwinkle. See `../brand.md`.
+
 ## Signature: the balance card
   what      Midnight card in the content layer, one big figure in Lime, the label in Cloud,
             the context line in Periwinkle. The only place brand colour is spent loudly.

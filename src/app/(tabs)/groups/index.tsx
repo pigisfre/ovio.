@@ -1,6 +1,7 @@
+import { Screen } from '../../../components/Screen.tsx';
 import { router, Stack } from 'expo-router';
 import { useMemo } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { BalanceCard } from '../../../components/BalanceCard.tsx';
 import { groupIcon } from '../../../components/Icon.tsx';
 import { Amount, Button, Empty, GroupAvatar, HeaderButton, Row, Section, Separator } from '../../../components/ui.tsx';
@@ -19,7 +20,7 @@ export default function Groups() {
   return (
     <>
       <Stack.Screen options={{ title: 'Gruppi', headerRight: () => <HeaderButton sf="plus" ion="add" label="Nuovo gruppo" onPress={() => router.push('/group/new')} /> }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ paddingBottom: 120 }}>
+      <Screen contentContainerStyle={{ paddingBottom: 120 }}>
         <BalanceCard cents={total} currency={currency} context={list.length ? (open ? `${open} ${open === 1 ? 'gruppo aperto' : 'gruppi aperti'}` : 'in tutti i gruppi') : undefined}>
           <Button kind="highlight" title="Nuova spesa" style={{ flex: 1 }} onPress={() => router.push('/expense/new')} />
         </BalanceCard>
@@ -46,7 +47,7 @@ export default function Groups() {
             })}
           </Section>
         )}
-      </ScrollView>
+      </Screen>
     </>
   );
 }

@@ -1,5 +1,6 @@
+import { Screen } from '../../components/Screen.tsx';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { categoryIcon, Icon } from '../../components/Icon.tsx';
 import { Avatar, Button, Empty, HeaderText, Row, Section, Separator, T } from '../../components/ui.tsx';
 import { formatMoney } from '../../lib/money.ts';
@@ -28,7 +29,7 @@ export default function ExpenseDetail() {
           headerRight: e.isPayment ? undefined : () => <HeaderText title="Modifica" onPress={() => router.push({ pathname: '/expense/new', params: { id: e.id } })} />,
         }}
       />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ paddingBottom: 48 }}>
+      <Screen contentContainerStyle={{ paddingBottom: 48 }}>
         <View style={{ alignItems: 'center', gap: 8, padding: 24 }}>
           <View style={{ width: 64, height: 64, borderRadius: radius.lg, backgroundColor: c.card, alignItems: 'center', justifyContent: 'center' }}>
             <Icon sf={ic.sf} ion={ic.ion} size={30} color={c['card-figure']} />
@@ -64,7 +65,7 @@ export default function ExpenseDetail() {
         <View style={{ margin: 16, marginTop: 24 }}>
           <Button kind="destructive" title={e.isPayment ? 'Elimina pagamento' : 'Elimina spesa'} onPress={remove} />
         </View>
-      </ScrollView>
+      </Screen>
     </>
   );
 }

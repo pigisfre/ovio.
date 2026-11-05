@@ -16,18 +16,22 @@ Checks (screening only, not legal clearance; none were run in this session):
 | App Store and Google Play exact name | store search | to run |
 | handles | Instagram, TikTok, X | to run |
 
-## Palette
+## Palette (one dark theme, since 2026-11-06)
+Only these five colours. Surfaces and secondary text are Cloud laid over Midnight at low opacity
+(the hex values in `design/tokens.json` are those mixes), so nothing outside the palette appears.
+
 | name | hex | role |
 | --- | --- | --- |
-| Midnight | #111827 | text, primary buttons, the balance card, dark background |
-| Lime | #D9F99D | the figure on the card, button text on Midnight, "me", positive in dark mode |
-| Cloud | #F8F9F6 | light background, text in dark mode |
-| Periwinkle | #A5B4FC | avatars, secondary context on the card |
-| Slate | #64748B | secondary text in light mode (4.50:1 on Cloud: never smaller than 13pt) |
+| Midnight | #111827 | every background |
+| Cloud | #F8F9F6 | all text; at 6 / 10 / 14 % for cards, raised controls and separators; at 66 % for secondary text (7.78:1) |
+| Lime | #D9F99D | action and good news: primary buttons, selected tab, header buttons, "ti devono", "Tutto pari", the figure on the balance card, my avatar |
+| Periwinkle | #A5B4FC | attention: "devi", errors, delete; other people's avatars |
+| Slate | #64748B | input borders and non-text lines only (3.7:1 on Midnight: too low for text) |
 
-Contrast: `python3 .claude/skills/replica-design/contrast.py replica/design/tokens.json` → 35 pairs, 0 failing.
+Material: Liquid Glass on the floating layer only (tab bar, navigation bars, the undo banner).
+Content (cards, rows) stays on solid Cloud tints, as Apple requires.
 
-Rule: Lime and Periwinkle are fills, never text on light backgrounds (1.1:1 and 1.9:1 on Cloud).
+Contrast: `python3 .claude/skills/replica-design/contrast.py replica/design/tokens.json` → 19 pairs, 0 failing.
 
 ## Voice
 Italian, second person, short, warm, never guilt-tripping about money.

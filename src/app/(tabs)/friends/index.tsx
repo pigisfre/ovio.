@@ -1,6 +1,7 @@
+import { Screen } from '../../../components/Screen.tsx';
 import { router, Stack } from 'expo-router';
 import { useMemo } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { BalanceCard } from '../../../components/BalanceCard.tsx';
 import { Amount, Avatar, Empty, HeaderButton, Row, Section, Separator } from '../../../components/ui.tsx';
 import { friendBalance, useFriends } from '../../../store/selectors.ts';
@@ -31,7 +32,7 @@ export default function Friends() {
   return (
     <>
       <Stack.Screen options={{ title: 'Amici', headerRight: () => <HeaderButton sf="person.badge.plus" ion="person-add-outline" label="Aggiungi amico" onPress={() => router.push('/friend/new')} /> }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ paddingBottom: 120 }}>
+      <Screen contentContainerStyle={{ paddingBottom: 120 }}>
         {friends.length === 0 ? (
           <Empty sf="person.2" ion="people-outline" title="Aggiungi i tuoi amici" body="Coinquilini, compagni di viaggio, la persona con cui dividi il caffè: aggiungili e ovio tiene il conto." action={{ title: 'Aggiungi un amico', onPress: () => router.push('/friend/new') }} />
         ) : (
@@ -41,7 +42,7 @@ export default function Friends() {
             {section('In pari', settled)}
           </>
         )}
-      </ScrollView>
+      </Screen>
     </>
   );
 }

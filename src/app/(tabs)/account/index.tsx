@@ -1,7 +1,8 @@
+import { Screen } from '../../../components/Screen.tsx';
 import { router, Stack } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Platform, ScrollView, Switch, View } from 'react-native';
-import { Avatar, Button, Field, Row, Section, Segmented, Separator, T } from '../../../components/ui.tsx';
+import { Alert, Platform, View } from 'react-native';
+import { Toggle, Avatar, Button, Field, Row, Section, Segmented, Separator, T } from '../../../components/ui.tsx';
 import { useMe } from '../../../store/selectors.ts';
 import { useS } from '../../../store/store.ts';
 import { useColors } from '../../../theme/index.ts';
@@ -31,7 +32,7 @@ export default function Account() {
   return (
     <>
       <Stack.Screen options={{ title: 'Account' }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 120 }}>
+      <Screen keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 120 }}>
         <View style={{ alignItems: 'center', gap: 8, paddingTop: 8 }}>
           <Avatar name={me?.name ?? '?'} me size={72} />
           <T v="title2">{me?.name}</T>
@@ -47,7 +48,7 @@ export default function Account() {
         <Section footer="Nei nuovi gruppi ovio riduce al minimo il numero di pagamenti necessari.">
           <Row
             title="Semplifica i debiti"
-            trailing={<Switch value={settings.simplifyByDefault} trackColor={{ true: c.accent }} onValueChange={(v) => setSettings({ simplifyByDefault: v })} accessibilityLabel="Semplifica i debiti nei nuovi gruppi" />}
+            trailing={<Toggle value={settings.simplifyByDefault} onChange={(v) => setSettings({ simplifyByDefault: v })} label="Semplifica i debiti nei nuovi gruppi" />}
           />
         </Section>
         <Section title="Informazioni">
@@ -58,7 +59,7 @@ export default function Account() {
         <View style={{ margin: 16, marginTop: 32 }}>
           <Button kind="destructive" title="Cancella tutti i dati" onPress={wipe} />
         </View>
-      </ScrollView>
+      </Screen>
     </>
   );
 }

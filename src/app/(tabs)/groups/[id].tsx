@@ -1,6 +1,7 @@
+import { Screen } from '../../../components/Screen.tsx';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { BalanceCard } from '../../../components/BalanceCard.tsx';
 import { ExpenseList } from '../../../components/ExpenseList.tsx';
 import { Button, Empty, HeaderButton } from '../../../components/ui.tsx';
@@ -27,7 +28,7 @@ export default function GroupDetail() {
           headerRight: () => <HeaderButton sf="gearshape" ion="settings-outline" label="Impostazioni del gruppo" onPress={() => router.push({ pathname: '/group/new', params: { id: group.id } })} />,
         }}
       />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ paddingBottom: 120 }}>
+      <Screen contentContainerStyle={{ paddingBottom: 120 }}>
         <BalanceCard cents={bal} currency={group.currency} context={context}>
           <Button kind="highlight" title="Nuova spesa" style={{ flex: 1 }} onPress={() => router.push({ pathname: '/expense/new', params: { groupId: group.id } })} />
           <Button kind="onCard" title="Salda" style={{ flex: 1 }} disabled={list.length === 0} onPress={() => router.push({ pathname: '/settle', params: { groupId: group.id } })} />
@@ -40,7 +41,7 @@ export default function GroupDetail() {
         ) : (
           <ExpenseList expenses={list} meId={meId} />
         )}
-      </ScrollView>
+      </Screen>
     </>
   );
 }

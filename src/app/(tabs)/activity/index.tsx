@@ -1,5 +1,6 @@
+import { Screen } from '../../../components/Screen.tsx';
 import { router, Stack } from 'expo-router';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { Icon } from '../../../components/Icon.tsx';
 import { Empty, Row, Section, Separator } from '../../../components/ui.tsx';
 import { useS } from '../../../store/store.ts';
@@ -32,7 +33,7 @@ export default function Activity() {
   return (
     <>
       <Stack.Screen options={{ title: 'Attività' }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ paddingBottom: 120 }}>
+      <Screen contentContainerStyle={{ paddingBottom: 120 }}>
         {activity.length === 0 ? (
           <Empty sf="clock" ion="time-outline" title="Ancora tutto tranquillo" body="Qui vedrai ogni spesa, modifica e pagamento, dal più recente." />
         ) : (
@@ -56,7 +57,7 @@ export default function Activity() {
             })}
           </Section>
         )}
-      </ScrollView>
+      </Screen>
     </>
   );
 }

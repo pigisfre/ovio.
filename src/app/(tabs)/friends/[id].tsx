@@ -1,6 +1,7 @@
+import { Screen } from '../../../components/Screen.tsx';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
-import { Alert, Platform, ScrollView, View } from 'react-native';
+import { Alert, Platform, View } from 'react-native';
 import { BalanceCard } from '../../../components/BalanceCard.tsx';
 import { ExpenseList } from '../../../components/ExpenseList.tsx';
 import { Button, Empty } from '../../../components/ui.tsx';
@@ -30,7 +31,7 @@ export default function FriendDetail() {
   return (
     <>
       <Stack.Screen options={{ title: friend.name }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ paddingBottom: 120 }}>
+      <Screen contentContainerStyle={{ paddingBottom: 120 }}>
         <BalanceCard cents={bal} currency={currency} context={bal === 0 ? (shared ? `${shared} gruppi in comune` : undefined) : bal > 0 ? `${friend.name} ti deve` : `devi a ${friend.name}`}>
           <Button kind="highlight" title="Nuova spesa" style={{ flex: 1 }} onPress={() => router.push({ pathname: '/expense/new', params: { friendId: id } })} />
           <Button kind="onCard" title="Salda" style={{ flex: 1 }} disabled={openCount === 0} onPress={() => router.push({ pathname: '/settle', params: { friendId: id } })} />
@@ -43,7 +44,7 @@ export default function FriendDetail() {
         <View style={{ margin: 16, marginTop: 32 }}>
           <Button kind="destructive" title="Rimuovi amico" onPress={remove} />
         </View>
-      </ScrollView>
+      </Screen>
     </>
   );
 }

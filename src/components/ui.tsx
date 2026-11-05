@@ -1,7 +1,7 @@
 import * as Haptics from 'expo-haptics';
 import { type ReactNode } from 'react';
 import {
-  Platform, Pressable, StyleSheet, Text, TextInput, View,
+  Platform, Pressable, StyleSheet, Switch, Text, TextInput, View,
   type PressableProps, type StyleProp, type TextInputProps, type TextStyle, type ViewStyle,
 } from 'react-native';
 import { formatMoney, type Cents } from '../lib/money.ts';
@@ -27,7 +27,7 @@ export function Button({ title, kind = 'primary', onPress, disabled, style, acce
   title: string; kind?: BtnKind; onPress: () => void; disabled?: boolean; style?: StyleProp<ViewStyle>; accessibilityHint?: string;
 }) {
   const c = useColors();
-  const bg = { primary: c.accent, secondary: c['surface-raised'], highlight: c.highlight, onCard: 'rgba(248,249,246,0.14)', plain: 'transparent', destructive: 'transparent' }[kind];
+  const bg = { primary: c.accent, secondary: c['surface-raised'], highlight: c.highlight, onCard: c['surface-raised'], plain: 'transparent', destructive: 'transparent' }[kind];
   const fg = { primary: c['on-accent'], secondary: c.text, highlight: c['on-highlight'], onCard: c['on-card'], plain: c.tint, destructive: c.danger }[kind];
   return (
     <Pressable
@@ -116,7 +116,7 @@ export function Avatar({ name, me, size = 40 }: { name: string; me?: boolean; si
 export function GroupAvatar({ sf, ion, size = 40 }: { sf: SFSymbol; ion: ComponentProps<typeof Ionicons>['name']; size?: number }) {
   const c = useColors();
   return (
-    <View style={{ width: size, height: size, borderRadius: radius.md, backgroundColor: c.card, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ width: size, height: size, borderRadius: radius.md, backgroundColor: c['surface-raised'], alignItems: 'center', justifyContent: 'center' }}>
       <Icon sf={sf} ion={ion} size={size * 0.48} color={c['card-figure']} />
     </View>
   );
@@ -156,7 +156,7 @@ export function Segmented<V extends string>({ value, options, onChange, label }:
 }) {
   const c = useColors();
   return (
-    <View accessibilityRole="tablist" accessibilityLabel={label} style={[s.seg, { backgroundColor: c['surface-raised'] }]}>
+    <View accessibilityRole="tablist" accessibilityLabel={label} style={[s.seg, { backgroundColor: c.surface }]}>
       {options.map((o) => {
         const on = o.value === value;
         return (
@@ -166,7 +166,7 @@ export function Segmented<V extends string>({ value, options, onChange, label }:
             accessibilityLabel={o.a11y ?? o.label}
             accessibilityState={{ selected: on }}
             onPress={() => { tap(); onChange(o.value); }}
-            style={[s.segItem, on && { backgroundColor: c.surface, shadowColor: '#000', shadowOpacity: 0.08, shadowRadius: 4, shadowOffset: { width: 0, height: 1 } }]}
+            style={[s.segItem, on && { backgroundColor: c.separator }]}
           >
             <Text style={[font('subheadline'), { color: c.text, fontWeight: on ? '600' : '400' }]}>{o.label}</Text>
           </Pressable>
@@ -211,3 +211,20 @@ const s = StyleSheet.create({
   segItem: { flex: 1, minHeight: 36, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 },
   empty: { alignItems: 'center', gap: 10, paddingHorizontal: 32, paddingVertical: 56 },
 });
+
+/** Switch in ovio colours: Lime when on, Cloud thumb (iOS keeps its own white thumb). */
+export function Toggle({ value, onChange, label }: { value: boolean; onChange: (v: boolean) => void; label: string }) {
+  const c = useColors();
+  const web = Platform.OS === 'web' ? ({ activeThumbColor: c.text, activeTrackColor: c.accent } as object) : {};
+  return (
+    <Switch
+      value={value}
+      onValueChange={(v) => { tap(); onChange(v); }}
+      trackColor={{ true: c.accent, false: c.separator }}
+      ios_backgroundColor={c.separator}
+      thumbColor={Platform.OS === 'ios' ? undefined : c.text}
+      accessibilityLabel={label}
+      {...web}
+    />
+  );
+}

@@ -1,7 +1,8 @@
+import { Screen } from '../../components/Screen.tsx';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
-import { ScrollView, Switch, View } from 'react-native';
-import { Avatar, Button, Row, Section, Separator, T } from '../../components/ui.tsx';
+import { View } from 'react-native';
+import { Toggle, Avatar, Button, Row, Section, Separator, T } from '../../components/ui.tsx';
 import { netBalances } from '../../lib/balances.ts';
 import { formatMoney } from '../../lib/money.ts';
 import { displayName, groupDebts, groupExpenses } from '../../store/selectors.ts';
@@ -24,7 +25,7 @@ export default function Balances() {
   return (
     <>
       <Stack.Screen options={{ title: 'Saldi' }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ paddingBottom: 48 }}>
+      <Screen contentContainerStyle={{ paddingBottom: 48 }}>
         <Section title="Chi deve a chi" footer={group.simplifyDebts ? 'Debiti semplificati: ovio riduce i pagamenti al minimo, senza cambiare quanto deve ognuno.' : undefined}>
           {debts.length === 0 ? (
             <Row title="Tutto pari" subtitle="Nessuno deve niente a nessuno." />
@@ -48,7 +49,7 @@ export default function Balances() {
           <Row
             title="Semplifica i debiti"
             subtitle="Meno pagamenti tra le persone del gruppo"
-            trailing={<Switch value={group.simplifyDebts} trackColor={{ true: c.accent }} thumbColor={undefined} onValueChange={(v) => { saveGroup({ ...group, simplifyDebts: v }); }} accessibilityLabel="Semplifica i debiti" />}
+            trailing={<Toggle value={group.simplifyDebts} onChange={(v) => saveGroup({ ...group, simplifyDebts: v })} label="Semplifica i debiti" />}
           />
         </Section>
 
@@ -84,7 +85,7 @@ export default function Balances() {
         <View style={{ margin: 16 }}>
           <Button kind="primary" title="Registra un pagamento" onPress={() => router.push({ pathname: '/settle', params: { groupId: group.id } })} />
         </View>
-      </ScrollView>
+      </Screen>
     </>
   );
 }

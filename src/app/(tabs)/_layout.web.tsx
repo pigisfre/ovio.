@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Redirect } from 'expo-router';
 import { Tabs } from 'expo-router/tabs';
 import type { ComponentProps } from 'react';
+import { GlassBar } from '../../components/Glass.tsx';
 import { useStore } from '../../store/store.ts';
 import { useColors } from '../../theme/index.ts';
 
@@ -24,7 +25,8 @@ export default function TabsLayoutWeb() {
         headerShown: false,
         tabBarActiveTintColor: c.tint,
         tabBarInactiveTintColor: c['text-muted'],
-        tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.separator, height: 64, paddingTop: 6, paddingBottom: 8 },
+        tabBarStyle: { position: 'absolute', backgroundColor: 'transparent', borderTopWidth: 0, height: 64, paddingTop: 6, paddingBottom: 8 },
+        tabBarBackground: () => <GlassBar edge="bottom" />,
         tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       }}
     >

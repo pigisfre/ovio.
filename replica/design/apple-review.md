@@ -1,5 +1,14 @@
 # Design review: ovio
 
+> **Update 2026-11-06, palette and material.** The app now has one dark theme: Midnight backgrounds,
+> Cloud text, Lime for action and good news, Periwinkle for attention, Slate only for lines. There are no
+> extra greens, reds or greys. Liquid Glass is on the floating layer only: `NativeTabs` and the stack
+> bars on iOS 26, and `src/components/Glass.tsx` elsewhere (blur + translucent Midnight; opaque with
+> Reduce Transparency). Cards stay on solid Cloud tints (`liquid-glass.md › The two layers`). Of the open
+> points below, these are now fixed: the 4.50:1 secondary text (now 7.78:1), the solid header
+> background (headers are transparent glass) and the teal web switch (`Toggle` in `ui.tsx`). Trade-off:
+> there is no light appearance, which is the client's choice. The HIG prefers apps that support both.
+
 Code audit of `src/app`, `src/components` and `replica/design/tokens.json`, run with the
 `apple-design` skill. Platform: iOS first (Expo / React Native), then Android and web.
 The material was the code and web screenshots in light and dark. Nothing was run on an iPhone, so

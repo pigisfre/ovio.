@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { Platform, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { glassHeader, sheetHeader } from '../components/headerOptions.tsx';
 import { UndoToast } from '../components/UndoToast.tsx';
 import { useHydrated } from '../store/store.ts';
 import { useColors, useIsDark } from '../theme/index.ts';
@@ -22,7 +23,7 @@ export default function RootLayout() {
   const c = useColors();
   const dark = useIsDark();
   const hydrated = useHydrated();
-  useWebFocusRing(dark ? c.periwinkle : '#4F46E5');
+  useWebFocusRing(c.tint);
   const base = dark ? DarkTheme : DefaultTheme;
   const theme = {
     ...base,
@@ -30,18 +31,18 @@ export default function RootLayout() {
   };
   if (!hydrated) return null;
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: Platform.OS === 'web' ? c['surface-raised'] : c.bg }}>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: c.bg }}>
       <ThemeProvider value={theme}>
         <StatusBar style={dark ? 'light' : 'dark'} />
-        <View style={Platform.OS === 'web' ? { flex: 1, width: '100%', maxWidth: 560, alignSelf: 'center', backgroundColor: c.bg, boxShadow: '0 0 0 1px ' + c.separator } : { flex: 1 }}>
-        <Stack screenOptions={{ headerShadowVisible: false, headerStyle: { backgroundColor: c.bg }, headerTintColor: c.tint, contentStyle: { backgroundColor: c.bg }, headerBackButtonDisplayMode: 'minimal' }}>
+        <View style={Platform.OS === 'web' ? { flex: 1, width: '100%', maxWidth: 560, alignSelf: 'center', backgroundColor: c.bg, boxShadow: '0 0 0 1px ' + c.separator, overflow: 'hidden' } : { flex: 1 }}>
+        <Stack screenOptions={{ ...sheetHeader, headerBackButtonDisplayMode: 'minimal' }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="welcome" options={{ headerShown: false, gestureEnabled: false, animation: 'fade' }} />
           <Stack.Screen name="expense/new" options={{ presentation: 'modal', title: 'Nuova spesa' }} />
-          <Stack.Screen name="expense/[id]" options={{ title: 'Spesa' }} />
+          <Stack.Screen name="expense/[id]" options={{ ...glassHeader(), title: 'Spesa' }} />
           <Stack.Screen name="group/new" options={{ presentation: 'modal', title: 'Nuovo gruppo' }} />
-          <Stack.Screen name="group/balances" options={{ title: 'Saldi' }} />
+          <Stack.Screen name="group/balances" options={{ ...glassHeader(), title: 'Saldi' }} />
           <Stack.Screen name="friend/new" options={{ presentation: 'formSheet', title: 'Nuovo amico', sheetAllowedDetents: [0.5, 1], sheetGrabberVisible: true }} />
           <Stack.Screen name="settle" options={{ presentation: 'formSheet', title: 'Salda', sheetAllowedDetents: [0.75, 1], sheetGrabberVisible: true }} />
         </Stack>
