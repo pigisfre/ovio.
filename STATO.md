@@ -1,11 +1,13 @@
 # ovio: a che punto siamo
 
-Ultimo aggiornamento: 2026-11-06. Branch di lavoro: `claude/fervent-einstein-fdsltp`.
+Ultimo aggiornamento: 2026-11-13. Branch di lavoro: `claude/fervent-einstein-fdsltp`.
 Sito web: https://pigisfre.github.io/ovio./ — **GitHub Pages disattivato dall’utente il 2026-11-05.** Il workflow continua a buildare, testare e aggiornare il branch `gh-pages`; per rimetterlo online: Settings → Pages → Branch `gh-pages` / root.
 
 ## Fatto
 
-- **Skill installate** in `.claude/skills/`: replica-* (11 skill) e apple-design.
+- **Skill installate** in `.claude/skills/`: replica-* (11 skill) e apple-design. Plugin EGM (Elephant-Goldfish
+  Model, Google) dichiarato in `.claude/settings.json`: documenti di progettazione rivisti da revisori
+  "a memoria vuota" prima di scrivere codice. Documenti in `docs/design/`.
 - **Documenti replica** in `replica/`: recon di Splitwise, feature matrix (parity 93/100, 18/18 must),
   architettura, `schema.sql` per Supabase, design token (35 coppie, 0 errori di contrasto),
   componenti, brand, revisione Apple (`design/apple-review.md`).

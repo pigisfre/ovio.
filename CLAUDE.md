@@ -8,3 +8,8 @@ App React Native (Expo SDK 58) per dividere le spese, in italiano. Prima di lavo
   nelle schermate. Dopo ogni cambio di palette: `python3 .claude/skills/replica-design/contrast.py replica/design/tokens.json`.
 - Importi sempre in centesimi interi (`src/lib/money.ts`).
 - Per le scelte di design usa la skill `apple-design`; per le nuove funzioni segui le skill `replica-*`.
+- Per le funzioni grandi (backend, condivisione, funzioni premium) prima il documento di progettazione con
+  il plugin EGM (`/egm:egm-brainstorm` → `/egm:egm-draft` → `/egm:egm-review`), poi il codice.
+  Il plugin è dichiarato in `.claude/settings.json` e si attiva nelle nuove sessioni.
+
+EGM artifact directory: docs/design
