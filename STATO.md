@@ -34,7 +34,9 @@ Sito web: https://pigisfre.github.io/ovio./ — **GitHub Pages disattivato dall�
    - verificare il vetro su iPhone (iOS 26 e versioni precedenti) e con "Riduci trasparenza".
 3. Funzioni mancanti (`replica/features.csv`): più pagatori, spese ricorrenti, ricerca, grafici,
    foto scontrino.
-4. Backend `/replica-backend`: account Supabase, sincronizzazione, gruppi condivisi tra telefoni.
+4. ovio condiviso + funzioni Pro: brainstorm EGM fatto, sintesi dei 7 revisori in `docs/design/concepts_brief.md`.
+   Da decidere: servizio (Firebase o Supabase), modello di sincronizzazione, indirizzo definitivo, fasi.
+   Poi prove su iPhone (accesso, offline) e `/egm:egm-draft`.
 5. `/replica-entrepreneur`: recensioni degli utenti Splitwise, per capire su cosa distinguersi.
 6. `/replica-brand` e `/replica-launch`: icona dell'app, verifica di marchio e dominio "ovio"
    (non fatta), testi per gli store.
