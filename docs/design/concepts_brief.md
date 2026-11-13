@@ -2,7 +2,7 @@
 
 * **Autore:** pigisfre
 * **Data:** 2026-11-13
-* **Stato:** brainstorm EGM, dopo la prima revisione dei 7 revisori indipendenti ("pesci rossi")
+* **Stato:** brainstorm EGM, dopo la revisione dei 7 revisori indipendenti ("pesci rossi") e le decisioni dell'autore del 2026-11-13
 
 ## Panoramica
 
@@ -213,18 +213,31 @@ prima di decidere. Sono marcate *(da verificare)*.
 
 ## Decisioni chiave e prossimi passi
 
-Da decidere con l'autore prima di `/egm:egm-draft`:
+**Decise dall'autore (2026-11-13):**
 
-1. **Servizio:**
-   - Firebase: offline già fatto, non va mai in pausa, ma niente codice email gratuito;
-   - Supabase: codice email incluso, ma va in pausa e la sincronizzazione va costruita con il registro.
-   
-   La scelta dipende da come accedono gli amici su iPhone.
-2. **Modello di sincronizzazione:**
-   - registro di operazioni che si può solo allungare (proposta inventiva);
-   - oppure spesa salvata per intero con cronologia a parte.
-3. **Indirizzo definitivo** del sito, scelto prima del primo invito.
-4. **Fasi:** fondamenta prima, funzioni Pro dopo. Va deciso se tutte le funzioni Pro entrano nella prima versione o arrivano a fasi.
+1. **Servizio: Supabase.** Motivo: il codice di 6 cifre via email funziona dentro l'app installata su iPhone.
+   Conseguenze, da portare in `/egm:egm-draft`:
+   - la **pausa** dopo circa una settimana senza uso *(da verificare)* si evita con un job programmato gratuito
+     di GitHub Actions che ogni giorno fa una richiesta al progetto. Lo stesso job pubblica `rates.json` con i
+     cambi BCE (punto 7). Il job va tenuto vivo: GitHub sospende i job programmati nei repository fermi da 60
+     giorni *(da verificare)*;
+   - la **sincronizzazione offline va costruita**. Proposta: il registro di operazioni che si può solo
+     allungare (punto 4). Il telefono tiene una coda delle operazioni da inviare; quando torna la rete invia la
+     coda e scarica le operazioni nuove degli altri. Sul server c'è una sola tabella in cui si può solo aggiungere;
+   - le **regole di accesso** del database si scrivono sui membri del gruppo, non sul proprietario della riga
+     (sostituiscono `replica/schema.sql`);
+   - l'**invio delle email** con il servizio incluso è molto limitato *(da verificare)*: serve un servizio
+     email esterno con piano gratuito, collegato a Supabase. Va verificato se chiede un dominio proprio (che costa);
+   - l'**indirizzo del sito** resta da scegliere, prima del primo invito. Firebase Hosting non serve più: le
+     alternative gratuite con un indirizzo tutto per ovio sono per esempio Cloudflare Pages o Vercel
+     *(da verificare)*. GitHub Pages resta sconsigliato (origine condivisa).
+2. **Funzioni Pro a fasi**, dopo le fondamenta. Tutte entrano, una alla volta.
+
+**Ancora aperte:**
+
+- indirizzo definitivo del sito;
+- servizio email gratuito per i codici;
+- registro di operazioni oppure spesa intera con cronologia a parte. La proposta per Supabase è il registro.
 
 Prove da fare prima di scrivere il documento definitivo, su un iPhone vero:
 
@@ -235,7 +248,7 @@ Prove da fare prima di scrivere il documento definitivo, su un iPhone vero:
 Ordine di lavoro proposto, comune a più revisori:
 
 1. l'app si apre offline (manifest e service worker) e si installa sulla Home;
-2. prove di accesso su iPhone, poi scelta del servizio;
+2. prove di accesso su iPhone con il codice email di Supabase;
 3. nuovo modello dei dati e regole di accesso, con test;
 4. sincronizzazione dietro un solo modulo, riusando i calcoli puri già esistenti in `src/lib`;
 5. accesso, segnaposto e inviti;
